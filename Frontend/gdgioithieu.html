@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giới Thiệu</title>
+
+
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" href="gdtong.css">
+
+
+
+  <style>
+/* Container */
+    .menu {
+      position: relative;
+      display: inline-block;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Chữ chính */
+    .menu > a {
+      text-decoration: none;
+      color: black;
+      padding: 10px 20px;
+      display: inline-block;
+      transition: 0.3s;
+    }
+
+    /* Đổi màu khi hover */
+    .menu > a:hover {
+      color: red;
+      background: #f0f0f0;
+    }
+
+    .menu > a:focus {
+      color: red;
+      background: #f0f0f0;
+    }
+
+    /* Dropdown ẩn mặc định */
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: white;
+      border: 1px solid #ccc;
+      min-width: 150px;
+      z-index: 1000;
+    }
+
+    /* Các mục trong dropdown */
+    .dropdown a {
+      display: block;
+      padding: 10px;
+      text-decoration: none;
+      color: black;
+      transition: 0.3s;
+    }
+
+    .dropdown a:hover {
+      background: #eee;
+      color: blue;
+    }
+
+    /* Khi hover vào .menu thì dropdown hiện ra */
+    .menu:hover .dropdown {
+      display: block;
+    }
+
+     /* Khi focus vào .menu thì dropdown hiện ra */
+    .menu:focus .dropdown {
+      display: block;
+    }
+
+
+.dropdown a:focus {
+    color: white;
+    background: red;
+    outline: none; /* bỏ viền xanh */
+  }
+
+    a:focus {
+    color: white;
+    background: red;
+    outline: none; /* bỏ viền xanh */
+  }
+  </style>
+
+</head>
+<body>
+    
+        <!--block là khóa lại nhưng chiếm hết dòng và no sẽ xuống dòng của các hàng
+        còn inline block là chỉ bọc các chữ của hàng chứ không hết hàng và cũng không xuống 
+        dòng cho từng hàng-->
+
+<div class="d-flex flex-row mb-3" style="background-color: rgb(210, 87, 87);">
+
+<div class="menu" style=" text-decoration: none; display: block;  ">
+    <a style="display: block; color: #ccc;"  >1900 6750</a>
+</div>
+
+
+
+<div class="menu" style=" text-decoration: none; display: block; ">
+    <a style="display: block; color: #ccc;">Thứ 2- Chủ Nhật 9:00-18:00</a>
+</div>
+
+
+<div class="menu" style=" text-decoration: none; display: block;  ">
+    <a style="display: block; color: #ccc;" href="gdlogin.html">dang nhap</a>
+</div>
+
+<div class="menu" style=" text-decoration: none; display: block; ">
+<a style="display: block; color: #ccc;" href="gdsignup.html">dang ki</a>
+</div>
+
+</div>
+<br>
+    <div class="row" style="display: inline-block; margin-left: 400px; ">
+
+<div class="menu">
+<a href="gdtrangchu.html">trang chu</a>
+</div>
+
+<div class="menu">
+<a href="gdgioithieu.html">gioi thieu</a>
+</div>
+
+  <div class="menu">
+    <a href="gdthucdon.html">thuc don</a>
+  </div>
+
+
+
+
+  <img src="https://bizweb.dktcdn.net/100/310/257/themes/801944/assets/logo.png?1676001091788" alt="anh">
+
+
+
+
+  <div class="menu">
+<a href="">tin tuc</a>
+</div>
+
+<div class="menu">
+<a href="">lien he</a>
+</div>
+
+<div class="menu">
+<a href="">nhuong quyen</a>
+</div>
+
+  </div>
+
+
+
+<div class="row linkduoichu" style="margin-left: 100px; width: 150px;">
+<p ><a href="gdgioithieu.html" style="font-size: large; " >Giới Thiệu</a></p>
+</div>
+
+
+<div class="row" style="margin-left: 100px; width: 1000px;">
+<p>Vanessa - Kênh mua sắm trực tuyến hàng đầu Việt Nam!</p>
+</div>
+
+
+
+<div class="row" style="margin-left: 100px; width: 1000px;">
+<p>Mua hàng trực tuyến (mua hàng online) mang lại sự tiện lợi, lựa chọn đa dạng hơn và các dịch vụ tốt hơn cho người tiêu dùng, thế nhưng người tiêu dùng Việt Nam vẫn chưa tận hưởng được những tiện ích đó. Chính vì vậy Vanessa được triển khai với mong muốn trở thành trung tâm mua sắm trực tuyến số 1 tại Việt Nam, nơi bạn có thể chọn lựa mọi thứ, từ các mặt hàng điện tử như laptop, điện thoại di động giá rẻ, thiết bị gia dụng như máy lạnh, máy lọc không khí, máy hút bụi mini gia đình, … Chúng tôi có tất cả!</p>
+</div>
+
+
+
+<div class="row" style="margin-left: 100px; margin-right: 100px; width: 900px; height: 500px;">
+<img src="https://bizweb.dktcdn.net/100/035/203/files/km-online.jpg?v=1449192023078" alt="anh">
+</div>
+
+
+<div class="row" style="margin-left: 100px; margin-right: 100px; width: 900px;">
+<p>
+    Tại Vanessa, bạn có thể mua đồ điện tử giá rẻ, cũng như các loại mặt hàng khác với rất nhiều các chương trình khuyến mãi hàng tháng. Bây giờ bạn có thể trải nghiệm mua hàng online thỏa thích mà Vanessa mang lại chỉ với 1 click chuột.
+    <br>
+    <br>
+   
+    Dù bạn là một nhà quản lý bận rộn với công việc hay là người nội trợ với danh sách dài việc phải làm, chắc chắn bạn cũng sẽ yêu thích trải nghiệm mua hàng tại Vanessa - mua hàng trực tuyến dễ dàng hơn, thuận tiện hơn và tiết kiệm thời gian.
+</p>
+</div>
+
+
+<div class="row" style="margin-left: 100px; margin-right: 100px; width: 900px; height: 500px;">
+<img src="https://bizweb.dktcdn.net/100/035/203/files/a5.jpg?v=1449192076293" alt="anh">
+</div>
+
+
+
+<div class="row" style="margin-left: 100px; margin-right: 100px; width: 900px;">
+Đối với hệ thống các Nhà cung cấp, Vanesa sẽ là công cụ tạo thêm các tiện ích, dịch vụ hỗ trợ khách hàng, thúc đẩy doanh số bán hàng, cắt giảm chi phí tối đa nâng cao lợi nhuận doanh nghiệp cho các nhà bán lẻ hàng tiêu dùng nhanh. Vanesa giúp phá bỏ mọi rào cản cũng như giới hạn về thời gian và địa lý giữa khách hàng và các Nhà Cung Cấp.
+<br>
+<br>
+
+Chiến lược phát triển: Vanesa hướng tới đối tượng khách hàng chủ yếu là cư dân thành phố. Với sự khảo sát và nghiên cứu kỹ lưỡng nhu cầu cũng mối quan tâm của khách hàng, Vanesa sẽ tập trung vào chất lượng sản phẩm và dịch vụ, mang đến cho người tiêu dùng những sản phẩm đảm bảo chất lượng, có thương hiệu lớn, những dịch vụ tốt nhất, tiện lợi nhất. 
+</div>
+
+<br>
+
+
+
+
+
+<footer class="footer-section text-light py-5" style="margin-top: 50px;">
+  <div class="container">
+    <div class="row">
+      <!-- Về chúng tôi -->
+      <div class="col-md-3">
+        <h5 class="fw-bold mb-3">VỀ CHÚNG TÔI</h5>
+        <p class="small">
+          Chúng tôi chuyên cung cấp các sản phẩm thực phẩm sạch, an toàn cho sức khoẻ người tiêu dùng.
+        </p>
+        <ul class="list-unstyled small">
+          <li><i class="bi bi-geo-alt-fill me-2"></i>Ladeco Building, 266 Đội Cấn, Hà Nội</li>
+          <li><i class="bi bi-telephone-fill me-2"></i>1900 6750</li>
+          <li>Thứ 2 - Chủ nhật: 9:00 - 18:00</li>
+          <li><i class="bi bi-envelope-fill me-2"></i>support@sapo.vn</li>
+        </ul>
+      </div>
+
+      <!-- Liên kết nhanh -->
+      <div class="col-md-3">
+        <h5 class="fw-bold mb-3">LIÊN KẾT NHANH</h5>
+        <ul class="list-unstyled small">
+          <li><a href="gdtrangchu.html" class="footer-link">Trang chủ</a></li>
+          <li><a href="gdgioithieu.html" class="footer-link">Giới thiệu</a></li>
+          <li><a href="gdthucdon.html" class="footer-link">Thực đơn</a></li>
+          <li><a href="#" class="footer-link">Tin tức</a></li>
+          <li><a href="#" class="footer-link">Liên hệ</a></li>
+          <li><a href="#" class="footer-link">Nhượng quyền</a></li>
+        </ul>
+      </div>
+
+      <!-- Hướng dẫn sử dụng -->
+      <div class="col-md-3">
+        <h5 class="fw-bold mb-3">HƯỚNG DẪN SỬ DỤNG</h5>
+        <ul class="list-unstyled small">
+          <li><a href="#" class="footer-link">Trang chủ</a></li>
+          <li><a href="#" class="footer-link">Giới thiệu</a></li>
+          <li><a href="#" class="footer-link">Thực đơn</a></li>
+          <li><a href="#" class="footer-link">Tin tức</a></li>
+          <li><a href="#" class="footer-link">Liên hệ</a></li>
+          <li><a href="#" class="footer-link">Nhượng quyền</a></li>
+        </ul>
+      </div>
+
+      <!-- Kết nối với Dualeo -->
+      <div class="col-md-3">
+        <h5 class="fw-bold mb-3">KẾT NỐI VỚI DUALEO</h5>
+        <ul class="list-unstyled small">
+          <li><a href="#" class="footer-link">Trang chủ</a></li>
+          <li><a href="#" class="footer-link">Giới thiệu</a></li>
+          <li><a href="#" class="footer-link">Thực đơn</a></li>
+          <li><a href="#" class="footer-link">Tin tức</a></li>
+          <li><a href="#" class="footer-link">Liên hệ</a></li>
+          <li><a href="#" class="footer-link">Nhượng quyền</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+
+
+
+     </div>
+</body>
+</html>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const guestArea = document.getElementById("guestArea");
+      const userArea = document.getElementById("userArea");
+      const welcomeText = document.getElementById("welcomeText");
+      const logoutBtn = document.getElementById("logoutBtn");
+
+      if (user) {
+        guestArea.style.display = "none";
+        userArea.style.display = "flex";
+        welcomeText.textContent = `Xin chào, ${user.TenNV || user.Username || "Người dùng"}!`;
+      } else {
+        guestArea.style.display = "block";
+        userArea.style.display = "none";
+      }
+
+      logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem("user");
+        window.location.href = "gdlogin.html";
+      });
+    });
+  </script>

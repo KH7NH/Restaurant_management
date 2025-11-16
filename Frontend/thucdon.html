@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thực đơn</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <style>
+        body {
+            background-color: #f3f4f6;
+            font-family: Arial, sans-serif;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        #foodList {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 25px;
+            padding: 10px;
+        }
+
+        .food-card {
+            background: #fff;
+            padding: 15px;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: 0.3s ease;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .food-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .food-img {
+            width: 100%;
+            height: 180px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-bottom: 12px;
+        }
+
+        .food-title {
+            font-size: 18px;
+            font-weight: 600;
+            min-height: 45px;
+        }
+
+        .food-price {
+            color: #c23616;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .food-status {
+            font-size: 20px;
+            color: #28a745;
+        }
+
+        .additem-btn {
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            background: #0a7707;
+            color: white;
+        }
+
+        /* Giỏ hàng */
+        #cart-icon {
+            position: fixed;
+            top: 120px;
+            right: 40px;
+            background-color: #ff4757;
+            color: white;
+            font-size: 24px;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 2000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        #cart-icon:hover {
+            transform: scale(1.1);
+            background-color: #e84118;
+        }
+
+        #cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ffe600;
+            color: #000;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+            border: 1px solid white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2 class="page-title">📋 Thực đơn</h2>
+
+    <div class="container mb-3" style="display: flex; justify-content: space-between">
+        <div class="text-center mb-4">
+            <input id="searchBox" type="text" class="form-control" style="max-width: 400px; margin: 0 auto;"
+                placeholder="🔍 Tìm món ăn...">
+        </div>
+
+        <div id="cart-icon" onclick="goToCart()">
+            <i class="bi bi-cart"></i>
+            <span id="cart-count">0</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="foodList"></div>
+    </div>
+
+    <div class="d-flex justify-content-center mt-4" id="paginationBox">
+        <button id="prevBtn" class="btn btn-secondary mx-2">« Trước</button>
+        <span id="pageIndicator" class="mx-3 font-weight-bold"></span>
+        <button id="nextBtn" class="btn btn-secondary mx-2">Tiếp »</button>
+    </div>
+
+    <!-- ========================== MODAL CHI TIẾT MÓN ĂN ========================== -->
+    <div class="modal fade" id="foodModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title">Chi tiết món ăn</h4>
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+
+                <div class="modal-body" id="foodDetail"></div>
+
+            </div>
+        </div>
+    </div>
+    <!-- ========================================================================== -->
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const API = "http://localhost:3000/api/monan";
+
+        let foodsData = [];
+        let searchKeyword = "";
+        let currentPage = 1;
+        let limit = 8;
+        let totalPages = 1;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadFoods();
+            cleanOldCartData();
+            loadCartCount();
+        });
+
+        /* ==================== LOAD MÓN ==================== */
+        async function loadFoods(page = 1) {
+            try {
+                const res = await fetch(`${API}?page=${page}&limit=${limit}&search=${encodeURIComponent(searchKeyword)}`);
+                const json = await res.json();
+
+                foodsData = json.data || [];
+                currentPage = json.page;
+                totalPages = json.totalPages;
+
+                renderFoods(foodsData);
+                updatePaginationUI();
+
+            } catch (err) {
+                console.error("Lỗi load món:", err);
+            }
+        }
+
+        function renderFoods(data) {
+            const box = document.getElementById("foodList");
+
+            box.innerHTML = data.map(item => {
+                const statusClass =
+                    item.TrangThai === "Còn hàng" ? "text-success" :
+                        item.TrangThai === "Hết hàng" ? "text-danger" :
+                            "text-secondary";
+
+                // ❌ Nếu hết hàng → vô hiệu hóa nút thêm giỏ
+                const disabled = item.TrangThai !== "Còn hàng" ? "disabled" : "";
+                const btnClass = item.TrangThai !== "Còn hàng"
+                    ? "background: gray; cursor: not-allowed;"
+                    : "";
+
+                return `
+            <div class="food-card" onclick="viewDetail(${item.IDMA})">
+                <img class="food-img" src="${item.AnhMon}">
+                <div class="food-title">${item.TenMA}</div>
+                <div class="food-price">${item.Gia.toLocaleString('vi-VN')}đ</div>
+
+                <div class="food-status ${statusClass}">
+                    ${item.TrangThai}
+                </div>
+
+                <button class="additem-btn mt-3"
+                    style="${btnClass}"
+                    ${disabled}
+                    onclick="event.stopPropagation(); tryAddToCart(${item.IDMA})">
+                    Thêm vào giỏ
+                </button>
+            </div>
+        `;
+            }).join("");
+        }
+
+        function tryAddToCart(id) {
+            const food = foodsData.find(f => f.IDMA === id);
+            if (!food) return;
+
+            if (food.TrangThai !== "Còn hàng") {
+                return alert("❌ Món này đã hết hàng, không thể thêm vào giỏ!");
+            }
+
+            addToCart(id);
+        }
+
+        /* ==================== XEM CHI TIẾT MÓN ==================== */
+        async function viewDetail(id) {
+            try {
+                const res = await fetch(`${API}/${id}`);
+                const food = await res.json();
+
+                const statusColor =
+                    food.TrangThai === "Còn hàng" ? "text-success" :
+                        food.TrangThai === "Hết hàng" ? "text-danger" :
+                            "text-secondary";
+
+                const html = `
+                    <img src="${food.AnhMon}" class="img-fluid rounded mb-3">
+
+                    <h3>${food.TenMA}</h3>
+
+                    <p class="food-price" style="font-size:24px;">
+                        ${food.Gia.toLocaleString("vi-VN")}đ
+                    </p>
+
+                    <p class="${statusColor}" style="font-size:18px;">
+                        🔖 Trạng thái: <b>${food.TrangThai}</b>
+                    </p>
+
+                    <hr>
+
+                    <h5>Mô tả món ăn</h5>
+                    <p style="white-space:pre-line;">${food.MoTa || "Không có mô tả"}</p>
+                `;
+
+                document.getElementById("foodDetail").innerHTML = html;
+                $("#foodModal").modal("show");
+
+            } catch (err) {
+                console.error("Lỗi xem chi tiết:", err);
+            }
+        }
+
+        /* ==================== PAGINATION ==================== */
+        function updatePaginationUI() {
+            document.getElementById("pageIndicator").innerText = `Trang ${currentPage} / ${totalPages}`;
+
+            document.getElementById("prevBtn").disabled = currentPage === 1;
+            document.getElementById("nextBtn").disabled = currentPage === totalPages;
+        }
+
+        document.getElementById("prevBtn").onclick = () => {
+            if (currentPage > 1) loadFoods(currentPage - 1);
+        };
+
+        document.getElementById("nextBtn").onclick = () => {
+            if (currentPage < totalPages) loadFoods(currentPage + 1);
+        };
+
+        /* ==================== SEARCH ==================== */
+        document.getElementById("searchBox").addEventListener("input", function () {
+            searchKeyword = this.value.trim();
+            loadFoods(1);
+        });
+
+        /* ==================== CART ==================== */
+        function loadCartCount() {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+            document.getElementById("cart-count").innerText = total;
+        }
+
+        function addToCart(id) {
+            const food = foodsData.find(f => f.IDMA === id);
+            if (!food) return;
+
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+            const index = cart.findIndex(item => item.IDMA === id);
+
+            if (index !== -1) {
+                cart[index].quantity += 1;
+            } else {
+                cart.push({
+                    IDMA: food.IDMA,
+                    TenMA: food.TenMA,
+                    Gia: Number(food.Gia),
+                    AnhMon: food.AnhMon,
+                    quantity: 1
+                });
+            }
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+
+            loadCartCount();
+            alert(`Đã thêm ${food.TenMA} vào giỏ hàng!`);
+        }
+
+        function goToCart() {
+            window.location.href = "gdgiohangthemma.html";
+        }
+
+        function cleanOldCartData() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart = cart.filter(item => item.IDMA !== undefined);
+            localStorage.setItem("cart", JSON.stringify(cart));
+        }
+
+    </script>
+
+</body>
+
+</html>

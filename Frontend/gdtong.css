@@ -1,0 +1,423 @@
+.khunglogin{
+  border: 5px ;
+  border-radius: 5px  ;
+ padding: 0px;
+ margin-left: 400px;
+ margin-right: 400px;
+ margin-top: 200px;
+  
+}
+
+
+
+.khunglogin2{
+  border: 5px ;
+  border-radius: 5px  ;
+ padding: 5px;
+}
+
+.dorongochuavanban{
+  width: 70%;
+}
+
+
+.dorongochuavanban2{
+  width: 70%;
+}
+
+.flexcha {
+  display: flex;
+  flex-wrap: wrap; /* cho phép xuống hàng nếu quá khổ */
+  gap: 20px; /* khoảng cách giữa các thẻ */
+  justify-content: flex-start; /* căn đều về bên trái */
+  align-items: stretch; /* các card cao bằng nhau */
+}
+
+.flexhang {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.flexcon{
+display: flex;
+flex-direction: column;
+}
+
+
+/* Ảnh nền */
+    .hero {
+      position: relative; /* cần để chứa các phần tử con tuyệt đối */
+      /* background-image: url('https://picsum.photos/1500/600'); ảnh nền demo */
+      background-image: url('https://media.gettyimages.com/id/2834604/photo/americans-continue-to-consume-beef-products-despite-first-case-of-mad-cow-disease-in-us.jpg?b=1&s=594x594&w=0&k=20&c=XMGAg3vKPg3cYbgxRBnNsFqQRsnl3gw5I1X2AhvjxYQ=');
+      background-size: cover;
+      background-position: center;
+      height: 500px;
+    }
+
+    /* Menu đè lên */
+    .menu2 {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(0,0,0,0.6); /* nền trong suốt */
+      color: white;
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .menu2 ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .menu2 li {
+      padding: 8px 0;
+      cursor: pointer;
+    }
+
+    /* Khung chữ/món ăn */
+    .content-box {
+      position: absolute;
+      /* top: 100px;
+      right: 50px; */
+      width: 300px;
+      background: rgba(255,255,255,0.85);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .content-box h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .content-box p {
+      margin: 0;
+    }
+
+
+.mytcard {
+  height: 100%;               /* giúp các card bằng chiều cao nhau */
+  display: flex;
+  flex-direction: column;     /* xếp nội dung theo chiều dọc */
+  justify-content: space-between; /* giãn đều nội dung để nút luôn nằm cuối */
+ 
+   padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+
+}
+
+
+.mytcard2 {
+  height: 100%;               /* giúp các card bằng chiều cao nhau */
+
+ 
+  justify-content: space-between; /* giãn đều nội dung để nút luôn nằm cuối */
+
+
+  flex: 1 1 240px; /* mỗi card chiếm bằng nhau, tối thiểu 240px */
+  display: flex;
+  flex-direction: column; /* để footer nằm dưới */
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+
+}
+
+
+.row-parent {
+  position: relative;
+  display: flex;
+  justify-content: space-around; /* hoặc space-between nếu muốn khít 2 bên */
+  align-items: flex-start;
+
+  /* ✅ Bổ sung 3 thuộc tính này */
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;  /* tránh lỗi vượt kích thước */
+  margin: 0 auto;          /* căn giữa toàn bộ hàng */
+  padding: 0 20px;         /* chừa khoảng hai bên ảnh để không tràn */
+}
+
+
+
+.row-parent2 {
+  /* position: relative; */
+  display: flex;
+  justify-content: space-around; /* hoặc space-between nếu muốn khít 2 bên */
+  align-items: flex-start;
+
+  /* ✅ Bổ sung 3 thuộc tính này */
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;  /* tránh lỗi vượt kích thước */
+  margin: 0 auto;          /* căn giữa toàn bộ hàng */
+  padding: 0 20px;         /* chừa khoảng hai bên ảnh để không tràn */
+}
+
+
+.bg-img {
+  width: 100%;
+  height: auto;
+}
+
+.col-item {
+  position: relative; /* ✅ con dùng absolute để chồng lên ảnh */
+  color: black;
+}
+
+.col-item2 {
+  /* position: relative; ✅ con dùng absolute để chồng lên ảnh */
+  color: black;
+  display: flex;
+  gap: 10px;
+  align-items: stretch; /* quan trọng: làm cho các card cùng cao */
+  /* flex-wrap: wrap; responsive: xuống hàng khi cần */
+
+}
+
+.bg-img {
+ 
+  width: 100%;
+  height: auto;
+ 
+}
+
+.text-overlay {
+  position: relative;   /* để có thể đè lên ảnh */
+  z-index: 0;           /* chữ nằm trên ảnh */
+  color: black;
+  padding: 1rem;
+}
+
+
+
+.text-overlay2 {
+  /* position: relative;   để có thể đè lên ảnh */
+  z-index: 0;           /* chữ nằm trên ảnh */
+  color: black;
+  padding: 1rem;
+}
+
+
+div[style*="overflow: hidden"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 0;
+  overflow: hidden; /* ✅ thêm dòng này để ngăn card tràn */
+}
+
+
+
+.card-footer {
+  margin-top: auto;
+  padding-top: 12px;
+  font-size: 0.9rem;
+  /* color: #555; */
+}
+
+
+
+    body {
+      background: url('https://images.unsplash.com/photo-1606755962773-0c09a4c05e0b?auto=format&fit=crop&w=1400&q=80') no-repeat center center/cover;
+      color: #333;
+    }
+    .menu-sidebar {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 8px;
+      padding: 15px;
+    }
+    .menu-sidebar h4 {
+      border-bottom: 2px solid #c00;
+      padding-bottom: 8px;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+    .menu-sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .menu-sidebar ul li {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .menu-sidebar ul li:hover {
+      background: #f8f9fa;
+      color: #c00;
+      font-weight: 500;
+    }
+    .discount-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #c00;
+      color: white;
+      font-size: 0.9rem;
+      padding: 3px 8px;
+      border-radius: 5px;
+    }
+    .menu-card {
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      background: white;
+      transition: all 0.3s;
+    }
+    .menu-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    }
+    .menu-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .menu-card-body {
+      padding: 15px;
+    }
+    .price {
+      color: #c00;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    .old-price {
+      text-decoration: line-through;
+      color: gray;
+      margin-left: 5px;
+    }
+  
+
+
+    .footer-images img{
+width: 16.66%;
+height:256px;
+object-fit: cover;
+    }
+
+
+
+
+
+    .footer-images img {
+  width: 16.66%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.footer-section {
+  background: #2f2f2f;
+  color: #ddd;
+}
+
+.footer-section h5 {
+  color: #fff;
+}
+
+.footer-link {
+  color: #ccc;
+  text-decoration: none;
+  display: block;
+  padding: 3px 0;
+}
+
+.footer-link:hover {
+  color: #ff5757;
+  text-decoration: underline;
+}
+
+.footer-section ul li {
+  margin-bottom: 6px;
+}
+
+
+
+
+/* Popup */
+    .popup {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .popup-content {
+      background: #fff;
+      margin: 5% auto;
+      padding: 20px;
+      width: 60%;
+      border-radius: 10px;
+      position: relative;
+    }
+
+    .close {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      font-size: 25px;
+      cursor: pointer;
+    }
+
+    .popup-body {
+      display: flex;
+      gap: 20px;
+    }
+
+    .popup-body img {
+      width: 40%;
+      border-radius: 8px;
+    }
+
+    .popup-info {
+      flex: 1;
+    }
+
+    button {
+      background: #c00;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background: #a00;
+    }
+
+
+
+.linkduoichu{
+  color: black;
+  font-size: large;
+}
+
+
+.linkduoichu :hover{
+  text-decoration: none;
+  color: red;
+  font-size: large;
+}
+
+
+.linkduoichu :focus{
+   text-decoration: none;
+  color: red;
+  font-size: large;
+}
+
+    

@@ -1,0 +1,17 @@
+# ====== Backend ======
+Backend/node_modules/
+Backend/.env
+
+# ====== Frontend ======
+Frontend/node_modules/
+
+# VSCode
+.vscode/
+
+# Logs
+*.log
+logs/
+
+# System files
+.DS_Store
+Thumbs.db

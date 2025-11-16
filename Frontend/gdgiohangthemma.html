@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Giỏ hàng</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .cart-item {
+      background: white;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      gap: 15px;
+    }
+
+    .cart-item img {
+      width: 100px;
+      height: 80px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .back-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: #007bff;
+      color: white;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 22px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Nút quay lại -->
+  <div class="back-btn" onclick="window.location.href='thucdon.html'">⟵</div>
+
+  <div class="container mt-4">
+    <h2 class="mb-4 text-center">🛒 Giỏ hàng</h2>
+
+    <!-- DANH SÁCH GIỎ HÀNG -->
+    <div id="cartList"></div>
+
+    <h4 class="mt-4">💰 Tổng tiền: <span id="totalPrice">0đ</span></h4>
+
+    <hr />
+
+    <!-- FORM THÔNG TIN KHÁCH -->
+    <h4>📌 Thông tin khách hàng</h4>
+
+    <label>Họ tên khách hàng</label>
+    <input id="tenKH" class="form-control mb-2" placeholder="Nhập tên khách hàng..." />
+
+    <label>Ghi chú</label>
+    <textarea id="ghiChu" class="form-control mb-2" placeholder="Ghi chú thêm..."></textarea>
+
+    <label>Phương thức thanh toán</label>
+    <select id="pttt" class="form-control mb-3">
+      <option value="Tiền mặt">Tiền mặt</option>
+      <option value="Chuyển khoản">Chuyển khoản</option>
+    </select>
+
+    <button class="btn btn-success btn-block" style="font-size:18px;" onclick="createOrder()">
+      ✔ Tạo đơn hàng
+    </button>
+
+  </div>
+
+  <script>
+    const API = "http://localhost:3000/api/order/create";
+    const EMPLOYEE = JSON.parse(localStorage.getItem("user"));
+
+    function loadCart() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const box = document.getElementById("cartList");
+
+      if (cart.length === 0) {
+        box.innerHTML = "<p class='text-center text-muted'>Giỏ hàng trống!</p>";
+        document.getElementById("totalPrice").textContent = "0đ";
+        return;
+      }
+
+      let html = "";
+      let total = 0;
+
+      cart.forEach(item => {
+        total += item.Gia * item.quantity;
+
+        html += `
+      <div class="cart-item">
+        <img src="${item.AnhMon}">
+        <div>
+          <h5>${item.TenMA}</h5>
+          <p>Giá: ${item.Gia.toLocaleString('vi-VN')}đ</p>
+
+          <p>
+            Số lượng:
+            <button class="btn btn-sm btn-danger" onclick="updateQuantity(${item.IDMA}, -1)">−</button>
+            <b>${item.quantity}</b>
+            <button class="btn btn-sm btn-success" onclick="updateQuantity(${item.IDMA}, 1)">+</button>
+          </p>
+        </div>
+      </div>
+    `;
+      });
+
+      box.innerHTML = html;
+      document.getElementById("totalPrice").textContent =
+        total.toLocaleString("vi-VN") + "đ";
+    }
+
+    loadCart();
+
+    async function createOrder() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      if (cart.length === 0) return alert("Giỏ hàng đang trống!");
+
+      const ten = document.getElementById("tenKH").value.trim();
+      const note = document.getElementById("ghiChu").value.trim();
+      const pttt = document.getElementById("pttt").value;
+
+      if (!ten) return alert("Vui lòng nhập tên khách hàng!");
+
+      // Chuẩn bị dữ liệu gửi BE
+      const orderData = {
+        IDNV: EMPLOYEE?.IDNV ?? 1,
+        TenKhachHang: ten,
+        GhiChu: note,
+        PhuongThucTT: pttt,
+        ChiTiet: cart.map(item => ({
+          IDMA: item.IDMA,
+          SoLuong: item.quantity,
+          GhiChu: ""
+        }))
+      };
+
+      try {
+        const res = await fetch(API, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(orderData)
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          alert("❌ Lỗi: " + data.message);
+          return;
+        }
+
+        alert("🎉 Tạo đơn hàng thành công! Mã đơn: " + data.orderId);
+
+        // RESET GIỎ HÀNG
+        localStorage.removeItem("cart");
+        window.location.href = "thucdon.html";
+
+      } catch (err) {
+        console.error(err);
+        alert("Không thể kết nối máy chủ!");
+      }
+    }
+
+    function updateQuantity(IDMA, change) {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      cart = cart
+        .map(item => {
+          if (item.IDMA === IDMA) {
+            item.quantity += change;
+          }
+          return item;
+        })
+        // 🔥 Loại bỏ món có số lượng <= 0
+        .filter(item => item.quantity > 0);
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+      loadCart();
+    }
+  </script>
+
+</body>
+
+</html>

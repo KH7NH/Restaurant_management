@@ -1,6 +1,6 @@
 const { sql, poolPromise } = require("../config/db");
 
-// ======================== Lấy tất cả món ăn ========================
+// ======================== Get all the food ========================
 exports.getAll = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -10,7 +10,7 @@ exports.getAll = async (req, res) => {
 
     const pool = await poolPromise;
 
-    // Query danh sách
+    // Query list
     const result = await pool.request()
       .input("search", sql.NVarChar, `%${search}%`)
       .input("offset", sql.Int, offset)
@@ -23,7 +23,7 @@ exports.getAll = async (req, res) => {
         OFFSET @offset ROWS FETCH NEXT @limit ROWS ONLY
       `);
 
-    // Query tổng số món (phục vụ phân trang)
+    // Query total number of dishes (pagination service)
     const countResult = await pool.request()
       .input("search", sql.NVarChar, `%${search}%`)
       .query(`
@@ -48,7 +48,7 @@ exports.getAll = async (req, res) => {
   }
 };
 
-// ======================== Lấy 1 món theo ID ========================
+// ======================== Get 1 item by ID ========================
 exports.getOne = async (req, res) => {
   const { id } = req.params;
 
@@ -69,7 +69,7 @@ exports.getOne = async (req, res) => {
   }
 };
 
-// ======================== Cập nhật món ăn ========================
+// ======================== Update dishes ========================
 exports.update = async (req, res) => {
   const { id } = req.params;
   const { TenMA, Gia, TrangThai, MoTa, AnhMon } = req.body;
@@ -100,7 +100,7 @@ exports.update = async (req, res) => {
   }
 };
 
-// ======================== Thêm món ăn ========================
+// ======================== Add dishes ========================
 exports.create = async (req, res) => {
   const { TenMA, Gia, TrangThai, MoTa, AnhMon } = req.body;
 
@@ -125,7 +125,7 @@ exports.create = async (req, res) => {
   }
 };
 
-// ======================== Xóa món ăn ========================
+// ======================== Delete dish ========================
 exports.deleteFood = async (req, res) => {
   const { id } = req.params;
 
@@ -148,7 +148,7 @@ exports.deleteFood = async (req, res) => {
   }
 };
 
-// ======================== Lấy danh sách món có phân trang ========================
+// ======================== Get a paginated list of items ========================
 exports.getPaged = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -157,7 +157,7 @@ exports.getPaged = async (req, res) => {
 
     const pool = await poolPromise;
 
-    // Lấy danh sách trang hiện tại
+    // Get the current page list
     const result = await pool.request()
       .input("limit", sql.Int, limit)
       .input("offset", sql.Int, offset)
@@ -169,7 +169,7 @@ exports.getPaged = async (req, res) => {
         FETCH NEXT @limit ROWS ONLY
       `);
 
-    // Lấy tổng số món
+    // Get the total number of items
     const totalQuery = await pool.request().query(`
       SELECT COUNT(*) AS total FROM MonAn
     `);

@@ -138,10 +138,26 @@
             border-radius: 10px;
             text-align: center;
         }
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #007bff;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
+    <div class="back-btn" onclick="window.location.href='dashboard.html'">⟵</div>
 
     <h2 class="page-title">📋 Danh sách món ăn</h2>
 
@@ -168,7 +184,7 @@
         <button id="nextBtn" class="btn btn-secondary mx-2">Tiếp »</button>
     </div>
 
-    <!-- POPUP SỬA -->
+    <!-- POPUP EDIT -->
     <div id="editPopup">
         <div class="modal-content">
             <span class="close" onclick="closeEditPopup()">&times;</span>
@@ -198,7 +214,7 @@
         </div>
     </div>
 
-    <!-- POPUP THÊM -->
+    <!-- MORE POPUPS -->
     <div id="addPopup">
         <div class="modal-content">
             <span class="close" onclick="closeAddPopup()">&times;</span>
@@ -225,7 +241,7 @@
         </div>
     </div>
 
-    <!-- POPUP XÓA -->
+    <!-- POPUP DELETE -->
     <div id="deletePopup">
         <div class="popup-box">
             <h4>❗ Xóa món ăn</h4>
@@ -398,7 +414,7 @@
         }
 
         let currentPage = 1;
-        let limit = 8; // số món trên mỗi trang
+        let limit = 8; // number of items per page
         let totalItems = 0;
         let totalPages = 1;
 
@@ -439,7 +455,7 @@
         /* ==================== SEARCH EVENT ==================== */
         document.getElementById("searchBox").addEventListener("input", function () {
             searchKeyword = this.value.trim();
-            loadFoods(1); // reset về trang đầu khi tìm kiếm
+            loadFoods(1); // reset to first page when searching
         });
     </script>
 </body>

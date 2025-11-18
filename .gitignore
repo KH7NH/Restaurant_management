@@ -1,16 +1,15 @@
-# ====== Backend ======
-Backend/node_modules/
-Backend/.env
+# Backend
+backend/node_modules/
+backend/.env
 
-# ====== Frontend ======
-Frontend/node_modules/
+# Frontend
+frontend/node_modules/
 
-# VSCode
+# Editor
 .vscode/
 
 # Logs
 *.log
-logs/
 
 # System files
 .DS_Store

@@ -2,19 +2,19 @@ const express = require("express");
 const router = express.Router();
 const monanController = require("../controllers/monanController");
 
-// Lấy tất cả món ăn
+// Get all the food
 router.get("/", monanController.getAll);
 
-// Lấy chi tiết 1 món
+// Get details of 1 item
 router.get("/:id", monanController.getOne);
 
-// Cập nhật món ăn
+// Update dishes
 router.put("/:id", monanController.update);
 
-// (Tùy chọn) Thêm món mới
+// Add new dishes
 router.post("/", monanController.create);
 
-// (Tùy chọn) Xoá món ăn
+// Delete dishes
 router.delete("/:id", monanController.deleteFood);
 
 router.get("/page", monanController.getPaged);

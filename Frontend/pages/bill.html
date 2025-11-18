@@ -47,19 +47,34 @@
         .st-cancel {
             background: #dc3545;
         }
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #007bff;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
-
+    <div class="back-btn" onclick="window.location.href='dashboard.html'">⟵</div>
     <div class="container mt-4">
         <h2 class="text-center mb-4">📄 Danh sách hóa đơn</h2>
 
-        <!-- Danh sách hóa đơn -->
+        <!-- List of invoices -->
         <div id="billList"></div>
     </div>
 
-    <!-- Modal Chi tiết hóa đơn -->
+    <!-- Modal Invoice Details -->
     <div class="modal fade" id="detailModal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -83,9 +98,7 @@
     <script>
         const API_ORDER = "http://localhost:3000/api/order";
 
-        // ============================
-        // 📌 LOAD DANH SÁCH HÓA ĐƠN
-        // ============================
+        // LOAD INVOICE LIST
         async function loadBills() {
             const box = document.getElementById("billList");
             box.innerHTML = "<p class='text-muted text-center'>Đang tải...</p>";
@@ -134,9 +147,7 @@
             }
         }
 
-        // ===================================================
-        // 📌 XEM CHI TIẾT MỘT HÓA ĐƠN
-        // ===================================================
+        // VIEW DETAILS OF AN INVOICE
         async function viewDetail(id) {
             try {
                 const res = await fetch(`${API_ORDER}/${id}`);
@@ -211,7 +222,6 @@
             document.getElementById("newStatus").value = data.DonHang.TrangThai;
         }
 
-        // Load ngay khi mở trang
         loadBills();
 
         async function saveStatus(id) {
@@ -233,7 +243,7 @@
                 alert("✔ Cập nhật thành công!");
 
                 $("#detailModal").modal("hide");
-                loadBills(); // reload danh sách hóa đơn
+                loadBills(); // reload invoice list
 
             } catch (err) {
                 console.error(err);

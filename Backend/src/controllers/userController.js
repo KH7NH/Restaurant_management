@@ -1,9 +1,6 @@
 // controllers/userController.js
 const { poolPromise } = require('../config/db');
-
-// =======================================================
 // LOGIN
-// =======================================================
 exports.loginUser = async (req, res) => {
   const { username, password } = req.body;
 
@@ -32,9 +29,7 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-// =======================================================
 // LOGOUT
-// =======================================================
 exports.logoutUser = async (req, res) => {
   try {
     res.json({ message: '✅ Đăng xuất thành công!' });
@@ -44,11 +39,7 @@ exports.logoutUser = async (req, res) => {
   }
 };
 
-// =======================================================
-// CRUD NHÂN VIÊN
-// =======================================================
-
-// Lấy tất cả người dùng
+// Get all users
 exports.getUsers = async (req, res) => {
   try {
     const pool = await poolPromise;
@@ -60,7 +51,7 @@ exports.getUsers = async (req, res) => {
   }
 };
 
-// Lấy người dùng theo ID
+// Get user by ID
 exports.getUserById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -69,7 +60,7 @@ exports.getUserById = async (req, res) => {
     const result = await pool
       .request()
       .input('id', id)
-      .query(`SELECT * FROM NhanVien WHERE Id = @id`);
+      .query(`SELECT * FROM NhanVien WHERE IDNV = @id`);
 
     if (result.recordset.length === 0)
       return res.status(404).json({ message: 'Không tìm thấy người dùng' });
@@ -81,52 +72,58 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-// Tạo người dùng mới
+// Create a new user
 exports.createUser = async (req, res) => {
   try {
-    const { Username, PasswordHash, FullName } = req.body;
+    const { TenNV, Username, PasswordHash, VaiTro } = req.body;
 
     const pool = await poolPromise;
     await pool
       .request()
+      .input('TenNV', TenNV)
       .input('Username', Username)
       .input('PasswordHash', PasswordHash)
-      .input('FullName', FullName)
+      .input('VaiTro', VaiTro)
       .query(`
-        INSERT INTO NhanVien (Username, PasswordHash, FullName)
-        VALUES (@Username, @PasswordHash, @FullName)
+        INSERT INTO NhanVien (TenNV, Username, PasswordHash, VaiTro)
+        VALUES (@TenNV, @Username, @PasswordHash, @VaiTro)
       `);
 
     res.json({ message: '✅ Tạo người dùng thành công!' });
+
   } catch (err) {
     console.error('❌ Lỗi createUser:', err);
     res.status(500).json({ message: 'Lỗi server', error: err.message });
   }
 };
 
-// Cập nhật người dùng
+// Update users
 exports.updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { FullName } = req.body;
+    const { TenNV, VaiTro } = req.body;
 
     const pool = await poolPromise;
     await pool
       .request()
       .input('id', id)
-      .input('FullName', FullName)
+      .input('TenNV', TenNV)
+      .input('VaiTro', VaiTro)
       .query(`
-        UPDATE NhanVien SET FullName = @FullName WHERE Id = @id
+        UPDATE NhanVien 
+        SET TenNV = @TenNV, VaiTro = @VaiTro
+        WHERE IDNV = @id
       `);
 
     res.json({ message: '✅ Cập nhật thành công!' });
+
   } catch (err) {
     console.error('❌ Lỗi updateUser:', err);
     res.status(500).json({ message: 'Lỗi server', error: err.message });
   }
 };
 
-// Xóa người dùng
+// Delete users
 exports.deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -135,9 +132,10 @@ exports.deleteUser = async (req, res) => {
     await pool
       .request()
       .input('id', id)
-      .query(`DELETE FROM NhanVien WHERE Id = @id`);
+      .query(`DELETE FROM NhanVien WHERE IDNV = @id`);
 
     res.json({ message: '🗑️ Xóa thành công!' });
+
   } catch (err) {
     console.error('❌ Lỗi deleteUser:', err);
     res.status(500).json({ message: 'Lỗi server', error: err.message });

@@ -49,20 +49,18 @@
 
 <body>
 
-  <!-- Nút quay lại -->
-  <div class="back-btn" onclick="window.location.href='thucdon.html'">⟵</div>
+  <div class="back-btn" onclick="window.location.href='menu.html'">⟵</div>
 
   <div class="container mt-4">
     <h2 class="mb-4 text-center">🛒 Giỏ hàng</h2>
 
-    <!-- DANH SÁCH GIỎ HÀNG -->
+    <!-- CART LIST -->
     <div id="cartList"></div>
 
     <h4 class="mt-4">💰 Tổng tiền: <span id="totalPrice">0đ</span></h4>
 
     <hr />
 
-    <!-- FORM THÔNG TIN KHÁCH -->
     <h4>📌 Thông tin khách hàng</h4>
 
     <label>Họ tên khách hàng</label>
@@ -139,7 +137,7 @@
 
       if (!ten) return alert("Vui lòng nhập tên khách hàng!");
 
-      // Chuẩn bị dữ liệu gửi BE
+      // Prepare data to send to BE
       const orderData = {
         IDNV: EMPLOYEE?.IDNV ?? 1,
         TenKhachHang: ten,
@@ -168,9 +166,9 @@
 
         alert("🎉 Tạo đơn hàng thành công! Mã đơn: " + data.orderId);
 
-        // RESET GIỎ HÀNG
+        // RESET CART
         localStorage.removeItem("cart");
-        window.location.href = "thucdon.html";
+        window.location.href = "menu.html";
 
       } catch (err) {
         console.error(err);
@@ -188,7 +186,7 @@
           }
           return item;
         })
-        // 🔥 Loại bỏ món có số lượng <= 0
+        // Remove items with quantity <= 0
         .filter(item => item.quantity > 0);
 
       localStorage.setItem("cart", JSON.stringify(cart));

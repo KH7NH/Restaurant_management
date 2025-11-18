@@ -3,11 +3,11 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 
-// 🔐 LOGIN / LOGOUT
+// LOGIN / LOGOUT
 router.post('/login', userController.loginUser);
 router.post('/logout', userController.logoutUser);
 
-// 👥 CRUD người dùng
+// CRUD Users
 router.get('/', userController.getUsers);           // Lấy danh sách
 router.get('/:id', userController.getUserById);     // Lấy theo ID
 router.post('/', userController.createUser);        // Thêm

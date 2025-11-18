@@ -12,19 +12,19 @@ const {
 
 
 router.put("/status/:id", updateOrderStatus);
-// 📌 Lấy danh sách đơn hàng
+// Get order list
 router.get("/", getOrders);
 
-// 📌 Lấy chi tiết 1 đơn hàng
+// Get details of 1 order
 router.get("/:id", getOrderById);
 
-// 📌 Tạo đơn hàng mới
+// Create new order
 router.post("/create", createOrder);
 
-// 📌 Cập nhật đơn hàng
+// Update orders
 router.put("/:id", updateOrder);
 
-// 📌 Xóa đơn hàng
+// Delete order
 router.delete("/:id", deleteOrder);
 
 

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thực đơn</title>
+    <title>Menu</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
@@ -81,7 +81,7 @@
             color: white;
         }
 
-        /* Giỏ hàng */
+        /* Shopping cart */
         #cart-icon {
             position: fixed;
             top: 120px;
@@ -121,10 +121,26 @@
             line-height: 20px;
             border: 1px solid white;
         }
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #007bff;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
+    <div class="back-btn" onclick="window.location.href='dashboard.html'">⟵</div>
 
     <h2 class="page-title">📋 Thực đơn</h2>
 
@@ -150,7 +166,7 @@
         <button id="nextBtn" class="btn btn-secondary mx-2">Tiếp »</button>
     </div>
 
-    <!-- ========================== MODAL CHI TIẾT MÓN ĂN ========================== -->
+    <!-- ========================== DISH DETAIL MODAL ========================== -->
     <div class="modal fade" id="foodModal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -165,7 +181,6 @@
             </div>
         </div>
     </div>
-    <!-- ========================================================================== -->
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -185,7 +200,7 @@
             loadCartCount();
         });
 
-        /* ==================== LOAD MÓN ==================== */
+        /* ==================== LOAD DISH ==================== */
         async function loadFoods(page = 1) {
             try {
                 const res = await fetch(`${API}?page=${page}&limit=${limit}&search=${encodeURIComponent(searchKeyword)}`);
@@ -212,7 +227,7 @@
                         item.TrangThai === "Hết hàng" ? "text-danger" :
                             "text-secondary";
 
-                // ❌ Nếu hết hàng → vô hiệu hóa nút thêm giỏ
+                // If out of stock → disable add to cart button
                 const disabled = item.TrangThai !== "Còn hàng" ? "disabled" : "";
                 const btnClass = item.TrangThai !== "Còn hàng"
                     ? "background: gray; cursor: not-allowed;"
@@ -250,7 +265,7 @@
             addToCart(id);
         }
 
-        /* ==================== XEM CHI TIẾT MÓN ==================== */
+        /* ==================== View detail dish ==================== */
         async function viewDetail(id) {
             try {
                 const res = await fetch(`${API}/${id}`);
@@ -345,7 +360,7 @@
         }
 
         function goToCart() {
-            window.location.href = "gdgiohangthemma.html";
+            window.location.href = "shopping_cart.html";
         }
 
         function cleanOldCartData() {

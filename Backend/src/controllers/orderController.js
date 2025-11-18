@@ -1,9 +1,6 @@
 const sql = require("mssql");
 const { config } = require("../config/db");
 
-// ========================
-// 🔧 HÀM BỎ DẤU
-// ========================
 function normalize(str) {
     return (str || "")
         .toLowerCase()
@@ -25,7 +22,7 @@ exports.createOrder = async (req, res) => {
     try {
         await transaction.begin();
 
-        // 1️⃣ Tạo DonHang
+        // Create DonHang
         const reqOrder = new sql.Request(transaction);
         reqOrder
             .input("IDNV", sql.Int, IDNV || 1)
@@ -40,7 +37,7 @@ exports.createOrder = async (req, res) => {
 
         const orderId = insertOrder.recordset[0].IDDonHang;
 
-        // 2️⃣ Thêm chi tiết món ăn
+        // Add dish details
         for (const item of ChiTiet) {
             const reqDetail = new sql.Request(transaction);
             reqDetail
@@ -55,7 +52,7 @@ exports.createOrder = async (req, res) => {
             `);
         }
 
-        // 3️⃣ Tính tổng tiền
+        // Calculate the total amount
         const totalRs = await new sql.Request(transaction)
             .input("IDDonHang", sql.Int, orderId)
             .query(`
@@ -67,10 +64,10 @@ exports.createOrder = async (req, res) => {
 
         const TongTien = totalRs.recordset[0].TongTien || 0;
 
-        // 4️⃣ Tạo hoá đơn
+        // Create invoice
         await new sql.Request(transaction)
             .input("IDDonHang", sql.Int, orderId)
-            .input("TongTien", sql.Decimal(10,2), TongTien)
+            .input("TongTien", sql.Decimal(10, 2), TongTien)
             .input("PhuongThucTT", sql.NVarChar, PhuongThucTT || "Tiền mặt")
             .query(`
                 INSERT INTO HoaDon (IDDonHang, TongTien, PhuongThucTT)
@@ -93,9 +90,7 @@ exports.createOrder = async (req, res) => {
 };
 
 
-// ========================
-// 📌 LẤY DANH SÁCH ĐƠN HÀNG
-// ========================
+// GET ORDER LIST
 exports.getOrders = async (req, res) => {
     try {
         const pool = await sql.connect(config);
@@ -116,16 +111,14 @@ exports.getOrders = async (req, res) => {
 };
 
 
-// ========================
-// 📌 LẤY CHI TIẾT 1 ĐƠN HÀNG
-// ========================
+// GET DETAILS OF 1 ORDER
 exports.getOrderById = async (req, res) => {
     const { id } = req.params;
 
     try {
         const pool = await sql.connect(config);
 
-        // Lấy thông tin đơn
+        // Get application information
         const order = await pool.request()
             .input("id", sql.Int, id)
             .query(`
@@ -135,7 +128,7 @@ exports.getOrderById = async (req, res) => {
         if (order.recordset.length === 0)
             return res.status(404).json({ message: "Không tìm thấy đơn hàng" });
 
-        // Lấy chi tiết món
+        // Get item details
         const details = await pool.request()
             .input("id", sql.Int, id)
             .query(`
@@ -146,7 +139,7 @@ exports.getOrderById = async (req, res) => {
                 WHERE IDDonHang = @id
             `);
 
-        // Lấy hoá đơn
+        // Get the invoice
         const invoice = await pool.request()
             .input("id", sql.Int, id)
             .query(`
@@ -165,9 +158,7 @@ exports.getOrderById = async (req, res) => {
 };
 
 
-// ========================
-// 📌 CẬP NHẬT TRẠNG THÁI ĐƠN HÀNG
-// ========================
+// ORDER STATUS UPDATE
 exports.updateOrder = async (req, res) => {
     const { id } = req.params;
     const { TenKhachHang, GhiChu, TrangThai } = req.body;
@@ -196,26 +187,24 @@ exports.updateOrder = async (req, res) => {
 };
 
 
-// ========================
-// 📌 XOÁ ĐƠN HÀNG
-// ========================
+//  DELETE ORDER
 exports.deleteOrder = async (req, res) => {
     const { id } = req.params;
 
     try {
         const pool = await sql.connect(config);
 
-        // Xoá chi tiết
+        // Delete details
         await pool.request()
             .input("id", sql.Int, id)
             .query(`DELETE FROM ChiTietDonHang WHERE IDDonHang = @id`);
 
-        // Xoá hoá đơn
+        // Delete invoice
         await pool.request()
             .input("id", sql.Int, id)
             .query(`DELETE FROM HoaDon WHERE IDDonHang = @id`);
 
-        // Xoá đơn hàng
+        // Delete order
         await pool.request()
             .input("id", sql.Int, id)
             .query(`DELETE FROM DonHang WHERE IDDonHang = @id`);

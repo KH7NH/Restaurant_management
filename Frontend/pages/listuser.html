@@ -6,6 +6,8 @@
     <title>Quản lý người dùng</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+    <link rel="icon" type="image/png" href="../assets/images/logo.png">
+
     <style>
         body {
             background-color: #f8f9fa;
@@ -33,6 +35,17 @@
     <div class="back-btn" onclick="window.location.href='dashboard.html'">⟵</div>
     <div class="container mt-4">
         <h2 class="text-center">Quản lý người dùng</h2>
+        <!-- FILTER -->
+        <div class="row mb-3">
+            <div class="col-md-4 offset-md-4">
+                <select id="filterRole" class="form-control" onchange="loadUsers()">
+                    <option value="">Tất cả</option>
+                    <option value="Quản lý">Quản lý</option>
+                    <option value="Nhân viên">Nhân viên</option>
+                    <option value="Bếp">Bếp</option>
+                </select>
+            </div>
+        </div>
 
         <!-- BUTTON MORE -->
         <button class="btn btn-primary my-3" data-toggle="modal" data-target="#addModal">
@@ -125,25 +138,39 @@
 
         // ================== LOAD LIST ==================
         function loadUsers() {
+            const filter = document.getElementById("filterRole").value;
+
             fetch(API_URL)
                 .then(res => res.json())
                 .then(data => {
+                    // Lọc theo vai trò nếu có chọn filter
+                    const filtered = filter
+                        ? data.filter(u => u.VaiTro === filter)
+                        : data;
+
+                    if (filtered.length === 0) {
+                        document.getElementById("userTable").innerHTML =
+                            `<tr><td colspan="6" class="text-center text-muted">Không tìm thấy người dùng phù hợp</td></tr>`;
+                        return;
+                    }
+
                     let html = "";
-                    data.forEach(u => {
+                    filtered.forEach(u => {
                         html += `
-                        <tr>
-                            <td>${u.IDNV}</td>
-                            <td>${u.TenNV}</td>
-                            <td>${u.Username}</td>
-                            <td>${u.PasswordHash}</td>
-                            <td>${u.VaiTro}</td>
-                            <td>
-                                <button class="btn btn-sm btn-warning" onclick='openEditModal(${JSON.stringify(u)})'>Sửa</button>
-                                <button class="btn btn-sm btn-danger" onclick="deleteUser(${u.IDNV})">Xóa</button>
-                            </td>
-                        </tr>
-                    `;
+                <tr>
+                    <td>${u.IDNV}</td>
+                    <td>${u.TenNV}</td>
+                    <td>${u.Username}</td>
+                    <td>${u.PasswordHash}</td>
+                    <td>${u.VaiTro}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" onclick='openEditModal(${JSON.stringify(u)})'>Sửa</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteUser(${u.IDNV})">Xóa</button>
+                    </td>
+                </tr>
+            `;
                     });
+
                     document.getElementById("userTable").innerHTML = html;
                 })
                 .catch(err => console.error("Lỗi load user:", err));

@@ -7,6 +7,7 @@
     <title>Danh sách hóa đơn</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="icon" type="image/png" href="../assets/images/logo.png">
 
     <style>
         body {
@@ -47,6 +48,7 @@
         .st-cancel {
             background: #dc3545;
         }
+
         .back-btn {
             position: fixed;
             top: 20px;
@@ -69,6 +71,17 @@
     <div class="back-btn" onclick="window.location.href='dashboard.html'">⟵</div>
     <div class="container mt-4">
         <h2 class="text-center mb-4">📄 Danh sách hóa đơn</h2>
+        <!-- Filter -->
+        <div class="row mb-3">
+            <div class="col-md-4 offset-md-4">
+                <select id="filterStatus" class="form-control" onchange="loadBills()">
+                    <option value="">Tất cả</option>
+                    <option value="Chờ xử lý">Chờ xử lý</option>
+                    <option value="Hoàn thành">Hoàn thành</option>
+                    <option value="Đã hủy">Đã hủy</option>
+                </select>
+            </div>
+        </div>
 
         <!-- List of invoices -->
         <div id="billList"></div>
@@ -101,6 +114,8 @@
         // LOAD INVOICE LIST
         async function loadBills() {
             const box = document.getElementById("billList");
+            const filter = document.getElementById("filterStatus").value;
+
             box.innerHTML = "<p class='text-muted text-center'>Đang tải...</p>";
 
             try {
@@ -112,31 +127,41 @@
                     return;
                 }
 
+                // 🟡 Lọc theo trạng thái (nếu có chọn)
+                const filtered = filter
+                    ? data.filter(b => b.TrangThai === filter)
+                    : data;
+
+                if (filtered.length === 0) {
+                    box.innerHTML = "<p class='text-center text-muted'>Không tìm thấy hóa đơn phù hợp!</p>";
+                    return;
+                }
+
                 let html = "";
-                data.forEach(bill => {
+                filtered.forEach(bill => {
                     const statusClass =
                         bill.TrangThai === "Hoàn thành" ? "st-done" :
                             bill.TrangThai === "Đã hủy" ? "st-cancel" : "st-pending";
 
                     html += `
-                        <div class="bill-card" onclick="viewDetail(${bill.IDDonHang})">
-                            <h5>🧾 Hóa đơn #${bill.IDDonHang}</h5>
+                <div class="bill-card" onclick="viewDetail(${bill.IDDonHang})">
+                    <h5>🧾 Hóa đơn #${bill.IDDonHang}</h5>
 
-                            <p>👤 Khách: <b>${bill.TenKhachHang}</b></p>
+                    <p>👤 Khách: <b>${bill.TenKhachHang}</b></p>
 
-                            <p>💰 Tổng tiền:
-                                <b>${bill.TongTien?.toLocaleString("vi-VN")}đ</b>
-                            </p>
+                    <p>💰 Tổng tiền:
+                        <b>${bill.TongTien?.toLocaleString("vi-VN")}đ</b>
+                    </p>
 
-                            <p>📅 Ngày: ${new Date(bill.Ngay).toLocaleString("vi-VN")}</p>
+                    <p>📅 Ngày: ${new Date(bill.Ngay).toLocaleString("vi-VN")}</p>
 
-                            <p>📌 Trạng thái: 
-                                <span class="status ${statusClass}">
-                                    ${bill.TrangThai ?? "Chưa cập nhật"}
-                                </span>
-                            </p>
-                        </div>
-                    `;
+                    <p>📌 Trạng thái:
+                        <span class="status ${statusClass}">
+                            ${bill.TrangThai ?? "Chưa cập nhật"}
+                        </span>
+                    </p>
+                </div>
+            `;
                 });
 
                 box.innerHTML = html;
